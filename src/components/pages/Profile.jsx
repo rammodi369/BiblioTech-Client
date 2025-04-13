@@ -62,9 +62,9 @@ import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-
+import { useDispatch } from "react-redux"
+import { setUser } from "../../redux/userslice";
 const stripePromise = loadStripe("pk_test_51NbLkfSBLQ6uxxfTOCK2W7V1xtmplETjC6OqJ8EDo3eKDNnvvGMgKVtbK8Z6sZN7oooGajxuA9PSEXcdLBQ53BwB00E6eRCzZp");
-
 const UserProfile = () => {
   const { user } = useSelector((state) => state.user);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
@@ -72,7 +72,7 @@ const UserProfile = () => {
   const [clientSecret, setClientSecret] = useState("");
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const token = localStorage.getItem("token");
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const fetchBooks = async (bookIds, setBooks) => {
       if (!bookIds?.length) return;
@@ -94,26 +94,38 @@ const UserProfile = () => {
 
   const createPaymentIntent = async () => {
     if (user.fine <= 0) return;
+  
     setIsPaymentProcessing(true);
-
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/create-payment-intent",
         {
-          amount: user.fine * 100, // Convert to paise (INR)
-          currency: "inr", // Ensure currency is INR
+          amount: user.fine,
+          currency: "inr",
           description: `Library fine payment for ${user.username}`,
+          user: user
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setClientSecret(response.data.clientSecret);
+      dispatch(setUser({ user: { ...user, fine: 0 }, token : localStorage.getItem("token") }));
+      if (response.data?.user && response.data?.clientSecret) {
+        console.log('we are here');
+        // //dispatch(setUser({
+        //   user: response.data.user,
+        //   token: localStorage.getItem("token")
+        // }));
+        setClientSecret(response.data.clientSecret);
+      } else {
+        console.error("Unexpected response structure:", response.data);
+      }
     } catch (error) {
       console.error("Error creating payment intent:", error);
     } finally {
       setIsPaymentProcessing(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white-200 py-12 px-4 sm:px-6 lg:px-8">

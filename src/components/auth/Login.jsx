@@ -28,6 +28,7 @@ export function SignIn() {
       })
       const { user, token } = res.data
       localStorage.setItem("token", token)
+      console.log(user);
       dispatch(setUser({ user, token }))
       setMessage("Login successful")
       setIsSuccess(true)

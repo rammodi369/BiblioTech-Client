@@ -286,7 +286,7 @@ function Navbar() {
           <span className="text-2xl font-bold text-blue-600">Biblio Tech</span>
         </Link>
         <div className="flex flex-1 items-center space-x-4">
-          {user.role==="student" &&<form className="flex-1 md:flex-initial">
+          {/* {user.role==="student" &&<form className="flex-1 md:flex-initial">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
               <Input
@@ -295,7 +295,7 @@ function Navbar() {
                 className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
               />
             </div>
-          </form>}
+          </form>} */}
           <nav className="hidden gap-6 md:flex">
             {menuItems.map((item, index) => (
               <Link key={index} to={item.href} className="text-blue-600 hover:text-blue-500 transition-colors">

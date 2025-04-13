@@ -40,8 +40,8 @@ import SearchBooksPage from './components/pages/SearchBooksPage';
 import PersonHistory from './components/pages/PersonHistory';
 import AddQuestion from './components/Librarian/AddQuestion';
 import QuestionList from './components/components/QuestionList';
-
-
+import AddStudyMaterial from './components/Librarian/AddStudyMaterial';
+import SearchMaterialsPage from './components/pages/SearchMaterialsPage';
 
 function App() {
   const user = useSelector((state) => state.user.user);
@@ -87,6 +87,7 @@ function App() {
              <Route path="/feedback" element={<><Navbar/><FeedbackForm/><Footer /></>} />
              <Route path ="/profile" element={<><Navbar/><UserProfile/><Footer/></>}/>
              <Route path="/search-books" element={<><Navbar/><SearchBooksPage/><Footer/></>}/>
+             <Route path="/materials" element={<><Navbar/><SearchMaterialsPage/><Footer/></>}/>
              <Route path ="users-history/:id" element={<><Navbar/><PersonHistory/><Footer/></>}/>
              <Route path ="question-Bank" element={<><Navbar/><QuestionList/><Footer/></>}/>
              
@@ -97,6 +98,7 @@ function App() {
                <Route path="finance" element={<Finance />} />
                <Route path="add-books" element={<AddBooks />} />
                <Route path="add-question" element={<AddQuestion />} />
+               <Route path="add-material" element={<AddStudyMaterial />} />
                <Route path="requests" element={<RequestList/>}/>
                <Route path ="book-history" element={<BookHisList/>}/>
                <Route path ="books/history/:id" element={<BookHistory/>}/>
